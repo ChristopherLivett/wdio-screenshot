@@ -10,7 +10,7 @@ export default function compareImages(image1, image2) {
         return reject(err);
       }
       assert.isTrue(isEqual);
-      assert.closeTo(equality, 0, 0.0001);
+      assert.closeTo(equality, 0, 0.00001);
       resolve();
     });
   });

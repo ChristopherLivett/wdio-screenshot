@@ -32,7 +32,9 @@
     "debug": "^2.2.0",
     "fs-promise": "^0.5.0",
     "gm": "^1.22.0",
-    "node-uuid": "^1.4.7"
+    "jimp": "^0.2.24",
+    "node-uuid": "^1.4.7",
+    "which": "^1.2.10"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
