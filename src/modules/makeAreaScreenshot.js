@@ -9,6 +9,7 @@ import generateUUID from '../utils/generateUUID';
 import saveBase64Image from '../utils/saveBase64Image';
 import cropImage from '../utils/cropImage';
 import mergeImages from '../utils/mergeImages';
+import ScreenDimension from '../utils/ScreenDimension';
 
 const log = debug('wdio-screenshot:makeAreaScreenshot');
 const tmpDir = path.join(__dirname, '..', '..', '.tmp');
@@ -18,8 +19,9 @@ export default async function makeAreaScreenshot(browser, startX, startY, endX, 
 
   const screenDimensions = (await browser.execute(getScreenDimensions)).value;
   log('detected screenDimensions %j', screenDimensions);
+  const screenDimension = new ScreenDimension(screenDimensions);
 
-  const screenshotStrategy = ScreenshotStrategyManager.getStrategy(browser, screenDimensions);
+  const screenshotStrategy = ScreenshotStrategyManager.getStrategy(browser, screenDimension);
   screenshotStrategy.setScrollArea(startX, startY, endX, endY);
 
   const uuid = generateUUID();
@@ -42,6 +44,8 @@ export default async function makeAreaScreenshot(browser, startX, startY, endX, 
       const filePath = path.join(dir, `${indexY}-${indexX}.png`);
 
       const base64Screenshot = (await browser.screenshot()).value;
+
+      // await saveBase64Image(path.join(dir, `${indexY}-${indexX}-org.png`), base64Screenshot);
 
       const cropDimensions = screenshotStrategy.getCropDimensions();
       log('crop screenshot with width: %s, height: %s, offsetX: %s, offsetY: %s', cropDimensions.getWidth(), cropDimensions.getHeight(), cropDimensions.getX(), cropDimensions.getY());
